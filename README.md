@@ -16,9 +16,7 @@ Drop in a CSV, Parquet, JSON or Excel file (or use the built-in 1M-row sample), 
 
 **Preview**
 
-<video src="docs/ts-pivot-preview.mp4" controls muted playsinline width="100%"></video>
-
-▶ [Watch the preview video](docs/ts-pivot-preview.mp4)
+https://github.com/user-attachments/assets/f069247e-3601-45dc-b52b-aadc3ef37655
 
 ---
 
