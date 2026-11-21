@@ -1,0 +1,46 @@
+{
+  "name": "ts-pivot",
+  "private": true,
+  "version": "0.1.0",
+  "author": "Darek Nyckowiak (https://typed.systems)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsrs -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsrs -b",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome lint .",
+    "format": "biome format --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write ."
+  },
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "^1.33.1-dev57.0",
+    "@fontsource/geist-mono": "^5.3.0",
+    "@pmndrs/assets": "^1.7.0",
+    "@react-three/drei": "^10.7.9",
+    "@react-three/fiber": "^9.8.2",
+    "@react-three/postprocessing": "^3.2.2",
+    "apache-arrow": "^17.0.0",
+    "fflate": "^0.8.3",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "three": "^0.187.0",
+    "troika-three-text": "^0.52.4"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.6.8",
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.187.0",
+    "@vitejs/plugin-react": "^6.3.0",
+    "happy-dom": "^21.0.4",
+    "tsrs": "^7.1.0-beta.tsrs4",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

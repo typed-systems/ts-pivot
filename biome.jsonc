@@ -1,0 +1,50 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "includes": ["**", "!!**/dist"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 120
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "style": {
+        // tsconfig has noUncheckedIndexedAccess, so `arr[i]!` in hot loops is the intended pattern.
+        "noNonNullAssertion": "off"
+      },
+      "suspicious": {
+        // `v !== v` is the NaN check used across the numeric loops (empty pivot cells are NaN).
+        "noSelfCompare": "off"
+      },
+      "a11y": {
+        // Drag-and-drop zones and field chips have no keyboard alternative yet: keep visible, don't block.
+        "noStaticElementInteractions": "warn"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "double",
+      "trailingCommas": "all",
+      "semicolons": "always"
+    }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  }
+}

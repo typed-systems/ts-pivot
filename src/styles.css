@@ -1,0 +1,447 @@
+/* Palette (in assignment order): purple, orange, pink, teal, yellow, green, grey, red, dark grey */
+:root {
+  --purple: #5e6ece;
+  --orange: #e89d55;
+  --pink: #f1cac2;
+  --teal: #52b3cc;
+  --yellow: #edc95c;
+  --green: #67b385;
+  --grey: #bfc2c8;
+  --red: #dd635b;
+  --dark-grey: #97a2b2;
+
+  --bg: #ffffff;
+  --panel: #f7f8fb;
+  --border: #e3e5ec;
+  --text: #111827;
+  --muted: #6b7280;
+  --accent: var(--purple);
+  --surface: #ffffff; /* buttons, selects, chips */
+  --on-accent: #ffffff;
+  --mix: white; /* what palette tints are mixed toward */
+  --rows: color-mix(in srgb, var(--purple) 14%, var(--mix));
+  --cols: color-mix(in srgb, var(--teal) 16%, var(--mix));
+  color-scheme: light;
+  --mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font: 400 13px / 1.4 var(--mono);
+  color: var(--text);
+  background: var(--bg);
+}
+
+/* Dark theme: set by the theme switch (data-theme on <html>, see src/theme/theme.ts). */
+:root[data-theme="dark"] {
+  --bg: #14161d;
+  --panel: #191c24;
+  --border: #2a2f3d;
+  --text: #e6e8ef;
+  --muted: #8b92a3;
+  --surface: #1f2330;
+  --accent: #7f8de6;
+  --on-accent: #0f1117;
+  --mix: #14161d;
+  --rows: color-mix(in srgb, var(--purple) 22%, var(--mix));
+  --cols: color-mix(in srgb, var(--teal) 18%, var(--mix));
+  color-scheme: dark;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+* {
+  box-sizing: border-box;
+}
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+.app {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto auto;
+  height: 100%;
+}
+
+button,
+select {
+  font: inherit;
+  color: var(--text);
+}
+button {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 6px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+button:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+select {
+  padding: 3px 6px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+select:disabled {
+  opacity: 0.5;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 18px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  background: var(--panel);
+}
+.brand {
+  display: block;
+  flex: none;
+  width: auto;
+  color: var(--accent);
+}
+b,
+strong {
+  font-weight: 500;
+}
+.group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.lbl,
+.source {
+  color: var(--muted);
+}
+.source {
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+.check {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  color: var(--muted);
+}
+.check input {
+  accent-color: var(--accent);
+}
+
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-left: auto;
+}
+.seg button {
+  border: 0;
+  border-radius: 0;
+  padding: 4px 12px;
+  color: var(--muted);
+}
+.seg button + button {
+  border-left: 1px solid var(--border);
+}
+.seg button.on {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+.seg.mode {
+  margin-left: 0;
+}
+.theme-btn {
+  white-space: nowrap;
+}
+.theme-btn.push {
+  margin-left: auto;
+}
+
+/* ---- drag & drop field zones */
+.zones {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  border-bottom: 1px solid var(--border);
+}
+.zone {
+  /* <fieldset> reset */
+  margin: 0;
+  border: 0;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 10px;
+  min-height: 40px;
+  transition: background 0.1s;
+}
+.zone + .zone {
+  border-left: 1px solid var(--border);
+}
+.zone-rows {
+  background: var(--rows);
+}
+.zone-cols {
+  background: var(--cols);
+}
+.zone.over {
+  outline: 2px dashed var(--accent);
+  outline-offset: -3px;
+}
+.zone-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  padding-top: 4px;
+  min-width: 56px;
+}
+.zone-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  flex: 1;
+  min-height: 26px;
+}
+.zone-empty {
+  color: var(--muted);
+  font-size: 12px;
+  font-style: italic;
+}
+.chip-wrap {
+  display: inline-flex;
+  align-items: center;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: inherit; /* <button> reset */
+  line-height: inherit;
+  cursor: grab;
+  user-select: none;
+}
+.chip:active {
+  cursor: grabbing;
+}
+.chip.numeric {
+  border-color: color-mix(in srgb, var(--orange) 55%, var(--mix));
+}
+.zone-rows .chip {
+  border-color: color-mix(in srgb, var(--purple) 45%, var(--mix));
+}
+.zone-cols .chip {
+  border-color: color-mix(in srgb, var(--teal) 60%, var(--mix));
+}
+.chip-ord {
+  display: inline-grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-size: 10px;
+}
+.zone-cols .chip-ord {
+  background: var(--teal);
+}
+.insert-mark {
+  width: 2px;
+  height: 20px;
+  background: var(--accent);
+  border-radius: 1px;
+  margin: 0 1px;
+}
+
+/* ---- views */
+/* Explicit rows: the field zones are hidden in Data mode, so don't rely on auto-placement. */
+.toolbar {
+  grid-row: 1;
+}
+.zones {
+  grid-row: 2;
+}
+.views {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  grid-row: 3;
+}
+.selbar {
+  grid-row: 4;
+}
+.status {
+  grid-row: 5;
+}
+.selbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 4px 12px;
+  min-width: 0;
+  font-family: var(--mono);
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  border-top: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg));
+}
+.sel-title {
+  color: var(--accent);
+  font-weight: 500;
+}
+.sel-span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  flex: 0 1 auto;
+}
+.sel-x,
+.sel-note {
+  color: var(--muted);
+}
+.sel-clear {
+  margin-left: auto;
+  padding: 1px 8px;
+}
+.view-2d,
+.view-3d {
+  grid-template-columns: 1fr;
+}
+.view-3d .pane-2d {
+  display: none;
+}
+.view-data {
+  grid-template-columns: 1fr;
+}
+.view-data .pane-2d {
+  display: none;
+}
+.view-split {
+  grid-template-columns: 1fr 1fr;
+}
+.pane {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.pane-3d {
+  border-left: 1px solid var(--border);
+}
+.grid-host {
+  position: absolute;
+  inset: 0;
+}
+/* Grids scroll natively but draw their own scrollbars (src/grid/core/scrollbars.ts). */
+.pg-scroller {
+  scrollbar-width: none;
+}
+.pg-scroller::-webkit-scrollbar {
+  display: none;
+}
+.scene-wrap {
+  position: absolute;
+  inset: 0;
+}
+.scene-hint {
+  position: absolute;
+  left: 10px;
+  bottom: 8px;
+  display: flex;
+  gap: 14px;
+  font-size: 11px;
+  color: var(--muted);
+  pointer-events: none;
+  background: color-mix(in srgb, var(--bg) 70%, transparent);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.scene-keys {
+  opacity: 0.8;
+}
+
+.busy {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--text);
+  color: var(--bg);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  pointer-events: none;
+}
+.file-drop {
+  position: absolute;
+  inset: 12px;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  font-size: 16px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--purple) 8%, transparent);
+}
+
+.status {
+  display: flex;
+  gap: 16px;
+  padding: 4px 12px;
+  border-top: 1px solid var(--border);
+  background: var(--panel);
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.status .hover {
+  color: var(--text);
+  margin-left: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status .err {
+  color: var(--red);
+}
+
+@media (max-width: 900px) {
+  .zones {
+    grid-template-columns: 1fr;
+  }
+  .zone + .zone {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+  .view-split {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .pane-3d {
+    border-left: 0;
+    border-top: 1px solid var(--border);
+  }
+}
